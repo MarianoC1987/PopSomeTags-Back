@@ -75,3 +75,43 @@ exports.loginController = (req, res) => {
       return res.status(400).json({ error: error });
     });
 };
+
+//Verificar el usuario que esta actualmente loggeado
+exports.currentLoggedUser = (req, res, next) => {
+  const token = req.header("Authorization");
+  if (!token) {
+    res.status(401).json({ error: "No has iniciado sesion" });
+    return;
+  }
+  try {
+    const decodedUser = jwt.verify(token, process.env.TOKEN_SECRET);
+    res.json({ user: decodedUser });
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "El token es invalido", mensaje: error });
+  }
+};
+
+///////////LISTA DE todos los USUARIOS
+exports.allUsers = (req, res) => {
+  knex("usuarios")
+    .then((respuesta) => {
+      res.json(respuesta);
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error.message });
+    });
+};
+
+//Buscar un usuario especifico por ID
+exports.searchId = (req, res) => {
+  const { id } = req.params;
+  knex("usuarios")
+    .where("usuarios.usuarioId", id)
+    .then((respuesta) => {
+      res.json(respuesta[0]);
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error.message });
+    });
+};
