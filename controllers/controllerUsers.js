@@ -174,10 +174,7 @@ exports.deleteUser = (req, res) => {
 exports.editUserInfo = (req, res) => {
   const id = req.params.id;
   const { nombre, email, perfil, telefono } = req.body;
-  console.log(id);
-  // console.log(email);
-  // console.log(perfil);
-  // console.log(telefono);
+
   knex("usuarios")
     .where("usuarioId", id)
     .update({
