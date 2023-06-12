@@ -16,7 +16,10 @@ app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
 
 //RUTAS
 const users = require("./routes/users");
+const sales = require("./routes/sales");
+
 app.use("/api", users);
+app.use("/api", sales);
 
 //EJECUCION DEL SERVIDOR
 const port = process.env.PORT;
